@@ -17,29 +17,19 @@ Clean: `make clean`
 
 Install: `make install`
 
-Add to login items: `make register`
+Add to login items: Settings->Login Items & Extensions
 
-Remove from login items: `make unregister`
+- under "Opens at Login" click + and select `$HOME/Applications/FloatClock.app` exactly as for any other OSX app.
 
 Uninstall: `make uninstall`
 
 ## Customisation notes
 
-To make changes to the clock text color, edit [FloatClock.swift](FloatClock.swift) the line:
+The menubar icon contains options to:
 
-```{swift}
-        label.textColor = NSColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1 - 1 / 8)
-```
-
-To change the font size:
-
-```{swift}
-             let font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .regular)
-```
-
-To change the size and position of the container, from the top right of the screen:
-
-```{swift}
-        let width: CGFloat = 60
-        let height: CGFloat = 12
-```
+* Hide the clock temporarily
+* Quit
+* Update the settings:
+        * Font size
+        * Text Color
+        * Position on screen (always a corner, always 10px from the edge at present) 

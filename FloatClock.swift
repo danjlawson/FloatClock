@@ -2,6 +2,7 @@
 
 // Copyright (c) 2018 Daniel
 // Copyright (c) 2023 Roman Dubtsov
+// Copyright (c) 2026 Daniel Lawson Github: @danjlawson
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// How to build:
-// $ swiftc -o clock -gnone -O -target x86_64-apple-macosx10.14 clock.swift
-// How to run:
-// $ ./clock
+// see README.md for usage instructions
 
 import Cocoa
 
