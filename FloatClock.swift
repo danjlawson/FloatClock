@@ -38,7 +38,8 @@ func calcWindowPosition(windowSize: CGSize, screenSize: CGSize) -> CGPoint {
 
 class Clock: NSObject, NSApplicationDelegate {
     var window: NSWindow!
-
+    var statusItem: NSStatusItem!
+    
     func updateWindowPosition() {
         if let screen = window.screen {
             let pos = calcWindowPosition(windowSize: self.window.frame.size,
@@ -46,20 +47,56 @@ class Clock: NSObject, NSApplicationDelegate {
             window.setFrameOrigin(pos)
         }
     }
+    
+    func initStatusBar() {
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        self.initTimeDisplay()
-
-        NotificationCenter.default.addObserver(
-            forName: NSApplication.didChangeScreenParametersNotification,
-            object: NSApplication.shared,
-            queue: OperationQueue.main
-        ) {
-            notification -> Void in
-            self.updateWindowPosition()
+        if let button = statusItem.button {
+            button.image =  NSImage(
+                    systemSymbolName: "clock",
+                    accessibilityDescription: "Clock"
+                                )
+            //"🕒"  // or use an SF Symbol instead
+            button.action = #selector(toggleWindow)
+            button.target = self
         }
+
+        let menu = NSMenu()
+        menu.addItem(NSMenuItem(title: "Show/Hide Clock", action: #selector(toggleWindow), keyEquivalent: "t"))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Quit", action: #selector(quitApp), keyEquivalent: "q"))
+        
+        statusItem.menu = menu
     }
 
+    @objc func toggleWindow() {
+        if window.isVisible {
+            window.orderOut(nil)
+        } else {
+            window.orderFrontRegardless()
+            updateWindowPosition()
+        }
+    }
+    
+    @objc func quitApp() {
+        NSApplication.shared.terminate(nil)
+    }
+    
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        self.initTimeDisplay()
+        self.initStatusBar()
+        
+        NotificationCenter.default.addObserver(
+                                      forName: NSApplication.didChangeScreenParametersNotification,
+                                      object: NSApplication.shared,
+                                      queue: OperationQueue.main
+                                  ) {
+                                      //notification -> Void in
+                                      _ in 
+                                      self.updateWindowPosition()
+                                  }
+    }
+    
     func initLabel(font: NSFont, format: String, interval: TimeInterval) -> NSTextField {
         let formatter = DateFormatter()
         formatter.dateStyle = .none
