@@ -71,7 +71,7 @@ class Clock: NSObject, NSApplicationDelegate {
         label.isEditable = false
         label.drawsBackground = false
         label.alignment = .center
-        label.textColor = NSColor(red: 1, green: 1, blue: 1, alpha: 1 - 1 / 8)
+        label.textColor = NSColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1 - 1 / 8)
 
         let shadow = NSShadow()
         shadow.shadowColor = NSColor(red: 0, green: 0, blue: 0, alpha: 1)
@@ -111,15 +111,15 @@ class Clock: NSObject, NSApplicationDelegate {
     }
 
     func initTimeDisplay() {
-        let font = NSFont.monospacedDigitSystemFont(ofSize: 22, weight: .regular)
+        let font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .regular)
         let label = self.initLabel(
             font: font,
             format: "hh:mm",
             interval: 1
         )
 
-        let width: CGFloat = 120
-        let height: CGFloat = 30
+        let width: CGFloat = 60
+        let height: CGFloat = 12
 
         self.window = self.initWindow(
             size: CGSizeMake(width, height),

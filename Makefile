@@ -1,5 +1,5 @@
 NAME = FloatClock
-PREFIX = /usr/local
+PREFIX = $(HOME)
 BIN_DIR = $(PREFIX)/bin
 LAUNCH_AGENTS_DIR = $(HOME)/Library/LaunchAgents
 
