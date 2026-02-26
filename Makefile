@@ -1,33 +1,31 @@
 NAME = FloatClock
-PREFIX = $(HOME)
-BIN_DIR = $(PREFIX)/bin
-LAUNCH_AGENTS_DIR = $(HOME)/Library/LaunchAgents
+APP = $(NAME).app
+CONTENTS = $(APP)/Contents
+MACOS = $(CONTENTS)/MacOS
+RESOURCES = $(CONTENTS)/Resources
 
-PLIST = $(NAME).plist
-INSTALLED_PLIST = $(LAUNCH_AGENTS_DIR)/$(PLIST)
+PREFIX = $(HOME)/Applications
+INSTALL_PATH = $(PREFIX)/$(APP)
 
-.PHONY: install uninstall all clean register unregister
+.PHONY: all clean install uninstall
 
-all: $(NAME)
+all: $(APP)
 
-$(NAME): $(NAME).swift
-	swiftc $< -o $@
-
-$(PLIST): $(PLIST).in
-	cat $< | sed 's,@BIN_DIR@,$(BIN_DIR),g;s,@NAME@,$(NAME),g' > $@
+$(APP): $(NAME).swift Info.plist
+	mkdir -p $(MACOS)
+	mkdir -p $(RESOURCES)
+	swiftc $(NAME).swift -o $(MACOS)/$(NAME)
+	cp Info.plist $(CONTENTS)/Info.plist
 
 clean:
-	rm -f $(NAME) $(PLIST)
+	rm -rf $(APP)
 
-install: $(NAME) $(PLIST)
-	install -m 755 $(NAME) $(BIN_DIR)
-	install -m 644 $(PLIST) $(INSTALLED_PLIST)
+install: $(APP)
+	mkdir -p $(PREFIX)
+	cp -R $(APP) $(PREFIX)
 
-uninstall: unregister
-	rm -f $(NAME) $(INSTALLED_PLIST)
+uninstall:
+	rm -rf $(INSTALL_PATH)
 
-unregister:
-	test -f $(INSTALLED_PLIST) && launchctl unload $(INSTALLED_PLIST) || true
 
-register: install
-	launchctl load $(INSTALLED_PLIST)
+
